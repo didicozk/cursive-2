@@ -1,16 +1,18 @@
 "use client"
 
 import { useState, Suspense } from "react"
-import { ArrowLeft, Brain, Sprout, Target, MessageCircleQuestion, Heart, Check, Bed } from "lucide-react"
+import { ArrowLeft, Check } from "lucide-react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image"
 
 function Step26Content() {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
-  // Récupère les paramètres de l'URL
+
+  // Retrieve URL parameters
   const gender = searchParams.get("gender") || "male"
   const age = searchParams.get("age") || ""
   const tiredness = searchParams.get("tiredness") || ""
@@ -35,96 +37,104 @@ function Step26Content() {
   const sleepImprovements = searchParams.get("sleepImprovements") || ""
   const struggles = searchParams.get("struggles") || ""
   const improvements = searchParams.get("improvements") || ""
+  const workOn = searchParams.get("workOn") || ""
 
-  const handleOptionToggle = (optionText: string) => {
-    setSelectedOptions((prevSelected) =>
-      prevSelected.includes(optionText)
-        ? prevSelected.filter((item) => item !== optionText)
-        : [...prevSelected, optionText],
-    )
+  const handleOptionSelect = (optionText: string) => {
+    setSelectedOption(optionText)
   }
 
   const handleContinue = () => {
-    const selectedWorkOn = selectedOptions.join(",")
-    router.push(
-      `/quiz/step-27?gender=${gender}&age=${age}&tiredness=${tiredness}&lastMinute=${lastMinute}&distraction=${distraction}&worried=${worried}&moodSwings=${moodSwings}&harmony=${harmony}&emotions=${emotions}&overwhelmed=${overwhelmed}&decision=${decision}&ambitions=${ambitions}&compliments=${compliments}&insecure=${insecure}&overthinkPartner=${overthinkPartner}&prioritizeOthers=${prioritizeOthers}&motivated=${motivated}&aspects=${aspects}&morningRoutine=${morningRoutine}&physicalActivity=${physicalActivity}&habits=${habits}&sleepImprovements=${sleepImprovements}&struggles=${struggles}&improvements=${improvements}&workOn=${selectedWorkOn}`,
-    )
+    if (selectedOption) {
+      router.push(
+        `/quiz/step-27?gender=${gender}&age=${age}&tiredness=${tiredness}&lastMinute=${lastMinute}&distraction=${distraction}&worried=${worried}&moodSwings=${moodSwings}&harmony=${harmony}&emotions=${emotions}&overwhelmed=${overwhelmed}&decision=${decision}&ambitions=${ambitions}&compliments=${compliments}&insecure=${insecure}&overthinkPartner=${overthinkPartner}&prioritizeOthers=${prioritizeOthers}&motivated=${motivated}&aspects=${aspects}&morningRoutine=${morningRoutine}&physicalActivity=${physicalActivity}&habits=${habits}&sleepImprovements=${sleepImprovements}&struggles=${struggles}&improvements=${improvements}&workOn=${workOn}&timeInvestment=${selectedOption}`,
+      )
+    }
   }
 
-  const options = [
-    { text: "Arrêter de douter de moi", icon: Brain },
-    { text: "Développer ma résilience émotionnelle", icon: Sprout },
-    { text: "Fixer et atteindre des objectifs", icon: Target },
-    { text: "Arrêter de trop réfléchir", icon: MessageCircleQuestion },
-    { text: "Améliorer ma capacité à faire confiance", icon: Heart },
-    { text: "Améliorer ma routine quotidienne", icon: Bed },
-  ]
+  const options = [{ text: "5 min/día" }, { text: "10 min/día" }, { text: "15 min/día" }, { text: "20 min/día" }]
 
   return (
-    // Utiliser QuizLayout pour la barre de progression, maintenant à l'étape 23/26
     <QuizLayout step={23} totalSteps={26}>
       <header className="w-full px-6 py-4 flex justify-between items-center absolute top-0 left-0 right-0 bg-[#f5f3f0] z-10">
         <Link
-          href={`/quiz/step-25?gender=${gender}&age=${age}&tiredness=${tiredness}&lastMinute=${lastMinute}&distraction=${distraction}&worried=${worried}&moodSwings=${moodSwings}&harmony=${harmony}&emotions=${emotions}&overwhelmed=${overwhelmed}&decision=${decision}&ambitions=${ambitions}&compliments=${compliments}&insecure=${insecure}&overthinkPartner=${overthinkPartner}&prioritizeOthers=${prioritizeOthers}&motivated=${motivated}&aspects=${aspects}&morningRoutine=${morningRoutine}&physicalActivity=${physicalActivity}&habits=${habits}&sleepImprovements=${sleepImprovements}&struggles=${struggles}&improvements=${improvements}`}
+          href={`/quiz/step-25?gender=${gender}&age=${age}&tiredness=${tiredness}&lastMinute=${lastMinute}&distraction=${distraction}&worried=${worried}&moodSwings=${moodSwings}&harmony=${harmony}&emotions=${emotions}&overwhelmed=${overwhelmed}&decision=${decision}&ambitions=${ambitions}&compliments=${compliments}&insecure=${insecure}&overthinkPartner=${overthinkPartner}&prioritizeOthers=${prioritizeOthers}&motivated=${motivated}&aspects=${aspects}&morningRoutine=${morningRoutine}&physicalActivity=${physicalActivity}&habits=${habits}&sleepImprovements=${sleepImprovements}&struggles=${struggles}&improvements=${improvements}&workOn=${workOn}`}
           className="p-2"
         >
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
-        <div className="flex items-center gap-2">{/* L'icône centrale peut être ajoutée ici si nécessaire */}</div>
-        <span className="text-gray-600 text-sm font-medium">23/26</span>
+        <div className="flex items-center gap-2">
+          <Image src="/images/pagina26/logo.svg" alt="Logo Courgio" width={100} height={30} className="h-7 w-auto" />
+        </div>
+        <span className="text-gray-600 text-sm font-medium">23/23</span>
       </header>
-      <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
+
+      <div className="absolute right-0 top-0 bottom-0 z-0 hidden lg:block">
+        <Image
+          src="/images/pagina26/migrated_d14fbcf1p6wyzn_v3_ai_quiz_time_male_25-34_background.webp"
+          alt="Happy man celebrating"
+          width={600}
+          height={800}
+          className="h-full w-auto object-cover"
+        />
+      </div>
+
+      <main className="relative flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-20 z-10 bg-[#f5f3f0] lg:bg-transparent">
         <div className="text-center space-y-2 mb-12">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-            Sur quoi aimeriez-vous commencer à travailler
+            ¿Cuánto tiempo estás dispuesto a invertir para
             <br />
-            avec votre programme ?
+            alcanzar tu objetivo?
           </h1>
-          <p className="text-gray-600 text-base">Choisissez tout ce qui s'applique</p>
         </div>
         <div className="w-full max-w-md space-y-4 mb-8">
           {options.map((option) => {
-            const Icon = option.icon
-            const isSelected = selectedOptions.includes(option.text)
+            const isSelected = selectedOption === option.text
             return (
               <button
                 key={option.text}
-                onClick={() => handleOptionToggle(option.text)}
-                className={`w-full p-4 text-left text-lg font-medium rounded-lg border-2 transition-all duration-200 flex items-center justify-between gap-4 ${
+                onClick={() => handleOptionSelect(option.text)}
+                className={`w-full p-4 text-center text-lg font-medium rounded-lg border-2 transition-all duration-200 flex items-center justify-center gap-4 ${
                   isSelected
                     ? "border-teal-500 bg-white text-gray-800"
                     : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
                 }`}
               >
-                <div className="flex items-center gap-4">
-                  <Icon className={`w-6 h-6 ${isSelected ? "text-teal-500" : "text-gray-400"}`} />
-                  <span>{option.text}</span>
-                </div>
-                <div
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                    isSelected ? "border-teal-500 bg-teal-500" : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {isSelected && <Check className="w-4 h-4 text-white" />}
-                </div>
+                <span>{option.text}</span>
+                {isSelected && (
+                  <div
+                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ml-auto ${
+                      isSelected ? "border-teal-500 bg-teal-500" : "border-gray-300 bg-white"
+                    }`}
+                  >
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                )}
               </button>
             )
           })}
         </div>
         <button
           onClick={handleContinue}
-          className="w-full max-w-sm bg-green-600 hover:bg-green-700 text-white font-medium py-4 px-8 rounded-full text-lg transition-colors"
+          disabled={!selectedOption}
+          className={`w-full max-w-sm font-medium py-4 px-8 rounded-full text-lg transition-colors ${
+            selectedOption
+              ? "bg-green-600 hover:bg-green-700 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
-          Continuer
+          Continuar
         </button>
+        <div className="mt-8">
+          <Image src="/images/pagina26/poweredbtcky.svg" alt="Powered by Tcky" width={120} height={30} />
+        </div>
       </main>
     </QuizLayout>
   )
 }
 
-export default function Step26() {
+export default function Step26Page() {
   return (
-    <Suspense fallback={<div>Chargement...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <Step26Content />
     </Suspense>
   )

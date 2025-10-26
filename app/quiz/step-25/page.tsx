@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, Suspense } from "react"
-import { ArrowLeft, MedalIcon as Meditation, Target, Hand, BatteryCharging, Brain, Grid, Check } from "lucide-react"
+import { ArrowLeft, Check } from "lucide-react" // Only Check and ArrowLeft are needed from lucide-react now
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image" // Import the Image component from next/image
 
 function Step25Content() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
@@ -50,13 +51,14 @@ function Step25Content() {
     )
   }
 
+  // Updated options to use image paths
   const options = [
-    { text: "Mon état de calme", icon: Meditation },
-    { text: "Mon niveau de concentration", icon: Target },
-    { text: "Ma volonté", icon: Hand }, // Utilisation de Hand pour représenter la volonté
-    { text: "Mon niveau d'énergie", icon: BatteryCharging },
-    { text: "Ma force intérieure", icon: Brain },
-    { text: "Autre", icon: Grid },
+    { text: "Comprar una casa", image: "/images/pagina25/migrated_d14fbcf1p6wyzn_v3_quiz_wish_1.webp" },
+    { text: "Una boda perfecta", image: "/images/pagina25/migrated_d14fbcf1p6wyzn_v3_quiz_wish_2.webp" },
+    { text: "Vacaciones", image: "/images/pagina25/migrated_d14fbcf1p6wyzn_v3_quiz_wish_3.webp" },
+    { text: "Comprar un coche", image: "/images/pagina25/migrated_d14fbcf1p6wyzn_v3_quiz_wish_4.webp" },
+    { text: "Jubilación sin preocupaciones", image: "/images/pagina25/migrated_d14fbcf1p6wyzn_v3_quiz_wish_5.webp" },
+    { text: "Otro", image: "/images/pagina25/migrated_d14fbcf1p6wyzn_v3_quiz_wish_5.webp" }, // Using the same image for "Otro" for now, you can change it if you have a specific one
   ]
 
   return (
@@ -69,21 +71,27 @@ function Step25Content() {
         >
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
-        <div className="flex items-center gap-2">{/* L'icône centrale peut être ajoutée ici si nécessaire */}</div>
+        <div className="flex items-center gap-2">
+          {/* Central logo */}
+          <Image
+            src="/images/pagina25/logo.svg"
+            alt="Logo"
+            width={100} // Adjust width as needed
+            height={30} // Adjust height as needed
+            className="h-7 w-auto" // Tailwind classes for sizing
+          />
+        </div>
         <span className="text-gray-600 text-sm font-medium">22/26</span>
       </header>
-      <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
+      <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-20"> {/* Adjusted mt-4 to mt-20 to account for header height */}
         <div className="text-center space-y-2 mb-12">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-            Pour vivre une vie plus heureuse, que pensez-vous
-            <br />
-            devoir améliorer ?
+            ¿Hay algo especial que desees lograr?
           </h1>
-          <p className="text-gray-600 text-base">Choisissez tout ce qui s'applique</p>
+          <p className="text-gray-600 text-base">Es más probable que alcances tu objetivo si tienes algo importante a lo que apuntar</p>
         </div>
         <div className="w-full max-w-md space-y-4 mb-8">
           {options.map((option) => {
-            const Icon = option.icon
             const isSelected = selectedOptions.includes(option.text)
             return (
               <button
@@ -96,7 +104,13 @@ function Step25Content() {
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <Icon className={`w-6 h-6 ${isSelected ? "text-teal-500" : "text-gray-400"}`} />
+                  <Image
+                    src={option.image}
+                    alt={option.text}
+                    width={24} // Adjust based on desired icon size
+                    height={24} // Adjust based on desired icon size
+                    className={`w-6 h-6 ${isSelected ? "text-teal-500" : "text-gray-400"}`} // You might not need these text classes for images
+                  />
                   <span>{option.text}</span>
                 </div>
                 <div
@@ -114,8 +128,17 @@ function Step25Content() {
           onClick={handleContinue}
           className="w-full max-w-sm bg-green-600 hover:bg-green-700 text-white font-medium py-4 px-8 rounded-full text-lg transition-colors"
         >
-          Continuer
+          Continuar
         </button>
+        {/* Footer with poweredbtcky.svg - assuming QuizLayout has a slot for this or you add it directly here */}
+        <div className="mt-8">
+           <Image
+            src="/images/pagina25/poweredbtcky.svg"
+            alt="Powered by Tcky"
+            width={120} // Adjust width as needed
+            height={30} // Adjust height as needed
+           />
+        </div>
       </main>
     </QuizLayout>
   )

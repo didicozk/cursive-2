@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, Suspense } from "react"
-import { ArrowLeft, Check, CircleOff, HelpCircle } from "lucide-react"
+import { ArrowLeft } from "lucide-react" // Keep ArrowLeft for navigation
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image" // Import the Image component
 
 function Step16Content() {
   const [selectedOption, setSelectedOption] = useState<string>("")
@@ -35,10 +36,11 @@ function Step16Content() {
     }, 300)
   }
 
+  // Options now include image sources
   const options = [
-    { text: "Oui", icon: Check },
-    { text: "Non", icon: CircleOff },
-    { text: "Je ne suis pas sûr(e)", icon: HelpCircle },
+    { text: "Sí", imageSrc: "/images/pagina16/migrated_d14fbcf1p6wyzn_v3_ai_quiz_new-skills_1.webp" }, // Thumbs up
+    { text: "No", imageSrc: "/images/pagina16/migrated_d14fbcf1p6wyzn_v3_ai_quiz_new-skills_2.webp" }, // Thumbs down
+    { text: "Hmm, no estoy seguro", imageSrc: "/images/pagina16/migrated_d14fbcf1p6wyzn_v3_ai_quiz_new-skills_3.webp" }, // Thinking face
   ]
 
   return (
@@ -51,33 +53,54 @@ function Step16Content() {
         >
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
-        <div className="flex items-center gap-2">{/* L'icône centrale peut être ajoutée ici si nécessaire */}</div>
+        <div className="flex items-center gap-2">
+          {/* Logo */}
+          <Image
+            src="/images/pagina16/logo.svg"
+            alt="Logo"
+            width={100} // Adjust width as needed
+            height={40} // Adjust height as needed
+            priority
+          />
+        </div>
         <span className="text-gray-600 text-sm font-medium">13/26</span>
       </header>
       <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
         <div className="text-center space-y-4 mb-12">
+          {/* Question illustration */}
+          <Image
+            src="/images/pagina16/passo 16..png"
+            alt="Question illustration"
+            width={150} // Adjust size as needed
+            height={150} // Adjust size as needed
+            className="mx-auto mb-4" // Center the image
+          />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-            J'ai tendance à trop analyser le comportement de mon/ma partenaire
+            ¿Se siente cómodo aprendiendo nuevas
+            <br />
+            habilidades o técnicas?
           </h1>
         </div>
         <div className="w-full max-w-md space-y-4">
-          {options.map((option) => {
-            const Icon = option.icon
-            return (
-              <button
-                key={option.text}
-                onClick={() => handleOptionSelect(option.text)}
-                className={`w-full p-4 text-left text-lg font-medium rounded-lg border-2 transition-all duration-200 flex items-center gap-4 ${
-                  selectedOption === option.text
-                    ? "border-teal-500 bg-white text-gray-800"
-                    : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                <Icon className={`w-6 h-6 ${selectedOption === option.text ? "text-teal-500" : "text-gray-400"}`} />
-                <span>{option.text}</span>
-              </button>
-            )
-          })}
+          {options.map((option) => (
+            <button
+              key={option.text}
+              onClick={() => handleOptionSelect(option.text)}
+              className={`w-full p-4 text-left text-lg font-medium rounded-lg border-2 transition-all duration-200 flex items-center gap-4 ${
+                selectedOption === option.text
+                  ? "border-teal-500 bg-white text-gray-800"
+                  : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <Image
+                src={option.imageSrc}
+                alt={option.text}
+                width={32} // Adjust icon size as needed
+                height={32} // Adjust icon size as needed
+              />
+              <span>{option.text}</span>
+            </button>
+          ))}
         </div>
       </main>
     </QuizLayout>

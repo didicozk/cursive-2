@@ -1,64 +1,114 @@
-"use client"
-
-import { Suspense } from "react"
-import { ArrowLeft } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
-import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image"
 
-function Step2Content() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const query = searchParams.toString()
+// Dados para os cards de seleção de idade com os caminhos das imagens corrigidos.
+const ageRanges = [
+  {
+    label: "Idade: 18-24",
+    imageSrc: "/images/pagina2/migrated_d14fbcf1p6wyzn_v3_ai_age-picker_male_18-24.webp",
+    href: "/quiz/step-3?age=18-24",
+  },
+  {
+    label: "Idade: 25-34",
+    // Corrigido: Removido o "age-25-34.webp" extra no início do nome do arquivo
+    imageSrc: "/images/pagina2/migrated_d14fbcf1p6wyzn_v3_ai_age-picker_male_25-34.webp",
+    href: "/quiz/step-3?age=25-34",
+  },
+  {
+    label: "Idade: 35-44",
+    // Corrigido: Removido o "age-35-44.webp" extra no início do nome do arquivo
+    imageSrc: "/images/pagina2/migrated_d14fbcf1p6wyzn_v3_ai_age-picker_male_35-44.webp",
+    href: "/quiz/step-3?age=35-44",
+  },
+  {
+    label: "Idade: 45+",
+    // Corrigido: Removido o "age-45-plus." extra no início do nome do arquivo
+    imageSrc: "/images/pagina2/migrated_d14fbcf1p6wyzn_v3_ai_age-picker_male_45.webp",
+    href: "/quiz/step-3?age=45+",
+  },
+]
 
-  const ageRanges = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
-
-  const handleAgeSelect = (age: string) => {
-    // Mappe "65+" à "65" dans l'URL
-    const ageForUrl = age === "65+" ? "65" : age
-    const params = new URLSearchParams(searchParams)
-    params.set("age", ageForUrl)
-    router.push(`/quiz/step-3?${params.toString()}`)
-  }
-
+export default function AgeSelectionPage() {
   return (
-    <QuizLayout step={2} totalSteps={26}>
-      <header className="w-full px-6 py-4 flex justify-between items-center absolute top-0 left-0 right-0 bg-[#f5f3f0] z-10">
-        <Link href={`/quiz/step-1?${query}`} className="p-2">
-          <ArrowLeft className="w-6 h-6 text-black" />
-        </Link>
-        <div className="flex items-center gap-2"></div>
-        <span className="text-gray-600 text-sm font-medium">2/26</span>
-      </header>
-
-      {/* --- MODIFICATION ICI --- */}
-      {/* Nous avons remplacé 'py-12' (rembourrage vertical) par 'pt-8 pb-12' pour réduire le rembourrage supérieur */}
-      <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
-        <div className="text-center space-y-6 mb-12">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Quel est votre âge ?</h1>
-          <p className="text-gray-600 text-lg">Cela nous aide à personnaliser votre expérience</p>
+    // Estrutura principal com flexbox para centralizar o conteúdo
+    <div className="min-h-screen bg-white flex flex-col items-center">
+      <main className="flex flex-col items-center justify-center flex-grow w-full px-4 text-center">
+        
+        {/* Logo no topo */}
+        <div className="mb-10">
+          <Image
+            src="/images/pagina1/logo.svg" // Reutilizando o mesmo logo
+            alt="Courziv Logo"
+            width={120}
+            height={40}
+          />
         </div>
 
-        <div className="w-full max-w-md space-y-4">
+        {/* Seção de Títulos */}
+        <div className="space-y-4 mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+            DESAFIO DE CRESCIMENTO
+            <br />
+            DE RECEITA DA IA
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-800 font-semibold">
+            DE ACORDO COM VOCÊ IDADE IDADE
+          </p>
+          <p className="text-gray-600 font-medium text-sm sm:text-base">
+            QUESTIONÁRIO DE 1 MINUTO
+          </p>
+        </div>
+
+        {/* Grid responsivo para os cards de idade */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6">
           {ageRanges.map((age) => (
-            <button
-              key={age}
-              onClick={() => handleAgeSelect(age)}
-              className="w-full p-4 text-left bg-white border border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors text-gray-800 font-medium"
-            >
-              {age}
-            </button>
+            <Link key={age.label} href={age.href} className="flex flex-col items-center group">
+              {/* Contêiner da Imagem com borda */}
+              <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl border-2 border-blue-300 p-2 overflow-hidden mb-3 transition-transform group-hover:scale-105">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={age.imageSrc}
+                    alt={`Personagem representando a idade ${age.label}`}
+                    layout="fill"
+                    objectFit="contain" // Garante que a imagem inteira apareça sem cortes
+                  />
+                </div>
+              </div>
+              {/* Botão de Ação */}
+              <div className="w-32 sm:w-40 bg-blue-500 group-hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-between transition-colors text-xs sm:text-sm">
+                <span>{age.label}</span>
+                <ChevronRight className="w-4 h-4" />
+              </div>
+            </Link>
           ))}
         </div>
-      </main>
-    </QuizLayout>
-  )
-}
 
-export default function Step2() {
-  return (
-    <Suspense fallback={<div>Chargement...</div>}>
-      <Step2Content />
-    </Suspense>
+        {/* Texto de Termos e Condições */}
+        <div className="text-center text-xs text-gray-500 max-w-sm mt-4">
+          <p>
+            Ao escolher sua idade, você aceita os{" "}
+            <Link href="/terms" className="underline hover:text-blue-600">
+              Termos e Condições
+            </Link>
+            ,{" "}
+            <Link href="/privacy" className="underline hover:text-blue-600">
+              Política de privacidade
+            </Link>
+            ,{" "}
+            <Link href="/subscription" className="underline hover:text-blue-600">
+              Termos Assinatura
+            </Link>
+          </p>
+        </div>
+      </main>
+
+      {/* Rodapé com novas informações */}
+      <footer className="w-full py-6 text-center">
+        <p className="text-xs text-gray-500">
+          Courziv Limited, Limassol, Chipre
+        </p>
+      </footer>
+    </div>
   )
 }

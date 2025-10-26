@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, Suspense } from "react"
-import { ArrowLeft, Check, CircleOff, HelpCircle } from "lucide-react"
+import { ArrowLeft } from "lucide-react" // Keep ArrowLeft for navigation
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image" // Import the Image component
 
 function Step15Content() {
   const [selectedOption, setSelectedOption] = useState<string>("")
@@ -34,10 +35,11 @@ function Step15Content() {
     }, 300)
   }
 
+  // The options now use the provided image assets as custom icons
   const options = [
-    { text: "Oui", icon: Check },
-    { text: "Non", icon: CircleOff },
-    { text: "Je ne suis pas sûr(e)", icon: HelpCircle },
+    { text: "Sí, trabajos paralelos ocasionales", imageSrc: "/images/pagina15/migrated_d14fbcf1p6wyzn_v3_ai_quiz_side-hustle_1.webp" }, // Flying money
+    { text: "No, solo un trabajo común", imageSrc: "/images/pagina15/migrated_d14fbcf1p6wyzn_v3_ai_quiz_side-hustle_2.webp" }, // Tools (hammer & wrench)
+    { text: "Trabajé como freelance", imageSrc: "/images/pagina15/migrated_d14fbcf1p6wyzn_v3_ai_quiz_side-hustle_3.webp" }, // Notepad with pencil
   ]
 
   return (
@@ -50,35 +52,54 @@ function Step15Content() {
         >
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
-        <div className="flex items-center gap-2">{/* L'icône centrale peut être ajoutée ici si nécessaire */}</div>
+        <div className="flex items-center gap-2">
+          {/* Logo */}
+          <Image
+            src="/images/pagina15/logo.svg"
+            alt="Logo"
+            width={100} // Adjust width as needed
+            height={40} // Adjust height as needed
+            priority
+          />
+        </div>
         <span className="text-gray-600 text-sm font-medium">12/26</span>
       </header>
       <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
         <div className="text-center space-y-4 mb-12">
+          {/* Question illustration */}
+          <Image
+            src="/images/pagina15/passo 15..png"
+            alt="Question illustration"
+            width={150} // Adjust size as needed
+            height={150} // Adjust size as needed
+            className="mx-auto mb-4" // Center the image
+          />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-            J'ai tendance à me sentir peu sûr(e) de moi
+            ¿Ha explorado formas de ganar dinero además
             <br />
-            en parlant aux autres
+            del trabajo regular?
           </h1>
         </div>
         <div className="w-full max-w-md space-y-4">
-          {options.map((option) => {
-            const Icon = option.icon
-            return (
-              <button
-                key={option.text}
-                onClick={() => handleOptionSelect(option.text)}
-                className={`w-full p-4 text-left text-lg font-medium rounded-lg border-2 transition-all duration-200 flex items-center gap-4 ${
-                  selectedOption === option.text
-                    ? "border-teal-500 bg-white text-gray-800"
-                    : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                <Icon className={`w-6 h-6 ${selectedOption === option.text ? "text-teal-500" : "text-gray-400"}`} />
-                <span>{option.text}</span>
-              </button>
-            )
-          })}
+          {options.map((option) => (
+            <button
+              key={option.text}
+              onClick={() => handleOptionSelect(option.text)}
+              className={`w-full p-4 text-left text-lg font-medium rounded-lg border-2 transition-all duration-200 flex items-center gap-4 ${
+                selectedOption === option.text
+                  ? "border-teal-500 bg-white text-gray-800"
+                  : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <Image
+                src={option.imageSrc}
+                alt={option.text}
+                width={32} // Adjust icon size as needed
+                height={32} // Adjust icon size as needed
+              />
+              <span>{option.text}</span>
+            </button>
+          ))}
         </div>
       </main>
     </QuizLayout>

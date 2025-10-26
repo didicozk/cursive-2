@@ -2,10 +2,11 @@
 
 import type React from "react"
 import { useState, Suspense } from "react"
-import { ArrowLeft, ThumbsDown, ThumbsUp, HelpCircle, XCircle, Sparkles } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { QuizLayout } from "@/components/quiz-layout" // 1. Importation du layout standard
+import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image" // Importe Image para usar as suas imagens
 
 function Step10Content() {
   const [selectedOption, setSelectedOption] = useState<string>("")
@@ -27,92 +28,115 @@ function Step10Content() {
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option)
     setTimeout(() => {
-      // Ajoute le nouveau paramètre et navigue vers l'étape suivante
+      // Adiciona o novo parâmetro e navega para a próxima etapa
       const nextParams = new URLSearchParams({
         ...urlParams,
-        emotions: option,
+        control: option, // Usando 'control' como o nome do parâmetro para esta pergunta
       })
       router.push(`/quiz/step-11?${nextParams.toString()}`)
     }, 500)
   }
 
-  const options = [
-    { value: "strongly-disagree", icon: ThumbsDown, label: "Pas du tout d'accord", iconModifier: XCircle },
-    { value: "disagree", icon: ThumbsDown, label: "" },
-    { value: "neutral", icon: HelpCircle, label: "" },
-    { value: "agree", icon: ThumbsUp, label: "" },
-    { value: "strongly-agree", icon: ThumbsUp, label: "Tout à fait d'accord", iconModifier: Sparkles },
-  ]
-
-  // Construit le lien de "retour" dynamiquement
+  // Constroi o link de "retour" dynamiquement
   const backLinkHref = `/quiz/step-9?${new URLSearchParams(urlParams).toString()}`
 
   return (
-    // 2. Utilisation de QuizLayout pour maintenir la cohérence du design
-    <QuizLayout step={7} totalSteps={26}>
+    <QuizLayout step={7} totalSteps={23}> {/* Atualizado totalSteps para 23 conforme a imagem */}
       
-      {/* 3. En-tête standardisé, identique à celui des étapes précédentes */}
+      {/* Cabeçalho modificado para usar suas imagens e espelhar o screenshot */}
       <header className="w-full px-6 py-4 flex justify-between items-center absolute top-0 left-0 right-0 bg-[#f5f3f0] z-10">
         <Link href={backLinkHref} className="p-2">
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
         <div className="flex items-center gap-2">
-          {/* L'icône centrale standard peut être insérée ici si désiré */}
+          <Image
+            src="/images/pagina10/logo.svg" // Seu logo Counzly
+            alt="Counzly Logo"
+            width={90} // Ajuste o tamanho conforme necessário
+            height={24} // Ajuste o tamanho conforme necessário
+            priority
+          />
         </div>
-        <span className="text-gray-600 text-sm font-medium">7/26</span> {/* Étape mise à jour */}
+        <div className="flex items-center gap-1"> {/* Contêiner para a barra de progresso e o texto "7/23" */}
+            <div className="w-12 h-2 bg-blue-200 rounded-full overflow-hidden">
+                <div className="h-full bg-[#6a3dfc]" style={{ width: `${(7 / 23) * 100}%` }}></div> {/* Progresso */}
+            </div>
+            <span className="text-gray-600 text-sm font-medium">7/23</span> {/* Número da etapa (agora sem imagem) */}
+        </div>
       </header>
 
-      {/* 4. 'main' avec la structure et l'espacement standardisés */}
-      <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
+      {/* Main com o conteúdo da pergunta */}
+      <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-28 mb-4"> {/* Ajustei o mt para dar espaço ao cabeçalho */}
         
-        {/* Titre avec un style standardisé */}
+        {/* Titulo com um estilo padronizado da sua imagem */}
         <div className="text-center space-y-3 mb-12">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-            Il m'est difficile d'exprimer mes émotions
+            ¿Deseas tener más control sobre sus horarios de trabajo y ubicación?
           </h1>
-          <p className="text-gray-600">Êtes-vous d'accord avec l'affirmation suivante ?</p>
         </div>
         
-        {/* 5. L'échelle d'évaluation unique de la page, maintenant dans le layout standard */}
-        <div className="w-full max-w-lg mx-auto">
-          <div className="flex justify-between items-start gap-2 sm:gap-4">
-            {options.map((option) => {
-              const Icon = option.icon
-              const IconModifier = option.iconModifier
-              const isSelected = selectedOption === option.value
+        {/* Opções de seleção replicando o estilo do screenshot */}
+        <div className="w-full max-w-lg mx-auto space-y-4">
+          <button
+            onClick={() => handleOptionSelect("si")}
+            className={`flex items-center p-4 rounded-xl border-2 transition-all duration-200 w-full text-left
+              ${selectedOption === "si" ? "border-purple-500 bg-white shadow-md" : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"}
+            `}
+          >
+            <Image
+              src="/images/pagina10/migrated_d14fbcf1p6wyzn_v3_ai_quiz_control_1.webp" // Imagem do polegar para cima
+              alt="Sí"
+              width={32}
+              height={32}
+              className="mr-3"
+            />
+            <span className="font-semibold text-lg">Sí</span>
+          </button>
 
-              return (
-                <div key={option.value} className="flex flex-col items-center gap-2 flex-1 text-center">
-                  <button
-                    onClick={() => handleOptionSelect(option.value)}
-                    className={`flex items-center justify-center rounded-xl border-2 transition-all duration-200 w-14 h-14 sm:w-16 sm:h-16 relative ${
-                      isSelected
-                        ? "border-teal-500 bg-white scale-105"
-                        : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"
-                    }`}
-                  >
-                    <Icon
-                      className={`w-6 h-6 sm:w-7 sm:h-7 ${isSelected ? "text-teal-500" : "text-gray-400"}`}
-                    />
-                    {IconModifier && (
-                      <IconModifier
-                        className={`absolute ${
-                          option.value === "strongly-disagree" ? "top-1 left-1" : "bottom-1 right-1"
-                        } w-4 h-4 ${isSelected ? "text-teal-500" : "text-gray-400"}`}
-                      />
-                    )}
-                  </button>
-                  {option.label && (
-                    <span className="text-xs sm:text-sm font-medium text-gray-600 min-h-[40px] flex items-center leading-tight">
-                      {option.label}
-                    </span>
-                  )}
-                </div>
-              )
-            })}
-          </div>
+          <button
+            onClick={() => handleOptionSelect("no")}
+            className={`flex items-center p-4 rounded-xl border-2 transition-all duration-200 w-full text-left
+              ${selectedOption === "no" ? "border-purple-500 bg-white shadow-md" : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"}
+            `}
+          >
+            <Image
+              src="/images/pagina10/migrated_d14fbcf1p6wyzn_v3_ai_quiz_control_2.webp" // Imagem do polegar para baixo
+              alt="No"
+              width={32}
+              height={32}
+              className="mr-3"
+            />
+            <span className="font-semibold text-lg">No</span>
+          </button>
+
+          <button
+            onClick={() => handleOptionSelect("not-sure")}
+            className={`flex items-center p-4 rounded-xl border-2 transition-all duration-200 w-full text-left
+              ${selectedOption === "not-sure" ? "border-purple-500 bg-white shadow-md" : "border-gray-200 bg-white text-gray-700 hover:border-gray-300"}
+            `}
+          >
+            <Image
+              src="/images/pagina10/migrated_d14fbcf1p6wyzn_v3_ai_quiz_control_3.webp" // <-- AGORA USANDO ESTA IMAGEM AQUI para o emoji pensando
+              alt="Hmm, no estoy seguro"
+              width={32}
+              height={32}
+              className="mr-3"
+            />
+            <span className="font-semibold text-lg">Hmm, no estoy seguro</span>
+          </button>
         </div>
       </main>
+
+      {/* Footer com "Powered by" */}
+      <footer className="w-full py-4 text-center mt-auto mb-4">
+        <Image
+          src="/images/pagina10/poweredbtcky.svg"
+          alt="Powered by TCKY"
+          width={120} // Ajuste conforme necessário
+          height={20} // Ajuste conforme necessário
+          className="mx-auto"
+        />
+      </footer>
     </QuizLayout>
   )
 }
@@ -121,7 +145,7 @@ export default function Step10() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#f5f3f0] flex items-center justify-center text-gray-500">Chargement...</div>
+        <div className="min-h-screen bg-[#f5f3f0] flex items-center justify-center text-gray-500">Cargando...</div>
       }
     >
       <Step10Content />

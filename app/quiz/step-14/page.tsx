@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { QuizLayout } from "@/components/quiz-layout"
+import Image from "next/image" // Import the Image component
 
 function Step14Content() {
   const [selectedOption, setSelectedOption] = useState<string>("")
@@ -50,11 +51,29 @@ function Step14Content() {
         >
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
-        <div className="flex items-center gap-2">{/* L'icône centrale peut être ajoutée ici si nécessaire */}</div>
+        <div className="flex items-center gap-2">
+          {/* Replace this with your logo */}
+          <Image
+            src="/images/pagina14/logo.svg" // Path to your logo
+            alt="Logo"
+            width={100} // Adjust width as needed
+            height={40} // Adjust height as needed
+            priority // For important images above the fold
+          />
+        </div>
         <span className="text-gray-600 text-sm font-medium">11/26</span>
       </header>
       <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
         <div className="text-center space-y-4 mb-12">
+          {/* You could also add an image here related to the question */}
+          {/* For example, if you want to use 'passo 14..png' as a visual cue */}
+          <Image
+            src="/images/pagina14/passo 14..png"
+            alt="Question illustration"
+            width={150} // Adjust size as needed
+            height={150} // Adjust size as needed
+            className="mx-auto mb-4" // Center the image
+          />
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
             Avez-vous déjà eu du mal à accepter
             <br />

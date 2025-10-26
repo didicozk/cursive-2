@@ -4,6 +4,7 @@ import { useState, Suspense } from "react"
 import { ArrowLeft, Check, CircleOff } from "lucide-react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
+import Image from "next/image" // Import Next.js Image component
 import { QuizLayout } from "@/components/quiz-layout"
 
 function Step29Content() {
@@ -62,7 +63,16 @@ function Step29Content() {
         >
           <ArrowLeft className="w-6 h-6 text-black" />
         </Link>
-        <div className="flex items-center gap-2">{/* L'icône centrale peut être ajoutée ici si nécessaire */}</div>
+        <div className="flex items-center gap-2">
+          {/* Using the logo from the specified path */}
+          <Image
+            src="/images/pagina29/logo.svg"
+            alt="Logo"
+            width={100} // Adjust width as needed
+            height={40} // Adjust height as needed
+            className="h-10 w-auto" // Tailwind classes for sizing
+          />
+        </div>
         <span className="text-gray-600 text-sm font-medium">26/26</span>
       </header>
       <main className="flex flex-col items-center justify-center px-3 pt-1 pb-2 max-w-2xl mx-auto mt-4">
@@ -70,6 +80,14 @@ function Step29Content() {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
             Avez-vous entendu parler de Liven par un spécialiste ?
           </h1>
+          {/* Example of adding one of the content images, adjust placement as needed */}
+          <Image
+            src="/images/pagina29/passo 29.png"
+            alt="Step Illustration"
+            width={300} // Adjust width as needed
+            height={200} // Adjust height as needed
+            className="mx-auto mt-4"
+          />
         </div>
         <div className="w-full max-w-md space-y-4">
           {options.map((option) => {
@@ -91,6 +109,16 @@ function Step29Content() {
           })}
         </div>
       </main>
+      {/* Example of adding a footer or "powered by" image */}
+      <footer className="w-full px-6 py-4 flex justify-center items-center mt-8">
+        <Image
+          src="/images/pagina29/poweredbtcky.svg"
+          alt="Powered by"
+          width={120} // Adjust width as needed
+          height={30} // Adjust height as needed
+          className="h-8 w-auto"
+        />
+      </footer>
     </QuizLayout>
   )
 }
